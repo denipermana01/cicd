@@ -1,3 +1,3 @@
 language: php
 script:
-    - cd cicd && docker build .
+    - php -m
