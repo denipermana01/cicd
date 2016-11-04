@@ -2,4 +2,5 @@ sudo: required
 services:
   - docker
 script:
-    - docker ps
+    - docker build . -t denipermana/cicd
+    - docker images
