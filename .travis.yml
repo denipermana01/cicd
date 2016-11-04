@@ -1,8 +1,15 @@
 sudo: required
 services:
   - docker
+env:
+  global:
+    - COMMIT=${TRAVIS_COMMIT::8}
 script:
-    - docker build . -t denipermana/cicd
-    - docker images
-    - docker login -e $DOCKER_HUB_EMAIL -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
-    - docker push denipermana/cicd
+  - docker build . -t denipermana/cicd
+  - export REPO=denipermana/cicd
+  - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
+  - docker login -e $DOCKER_HUB_EMAIL -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
+  - docker build -t $REPO:$COMMIT .
+  - docker tag $REPO:$COMMIT $REPO:$TAG
+  - docker tag $REPO:$COMMIT $REPO:travis-$TRAVIS_BUILD_NUMBER
+  - docker push $REPO
