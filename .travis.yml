@@ -4,3 +4,5 @@ services:
 script:
     - docker build . -t denipermana/cicd
     - docker images
+    - docker login -e $DOCKER_HUB_EMAIL -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
+    - docker push denipermana/cicd
